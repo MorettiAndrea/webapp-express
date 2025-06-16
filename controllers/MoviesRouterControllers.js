@@ -3,6 +3,8 @@
 const connection = require("../data/db")
 const { response } = require("express");
 
+// richiesta tutti i film
+
 const index = (req,res) => {const sql = `SELECT *
 FROM imdboolean.movies`
 
@@ -15,7 +17,27 @@ connection.query(sql,(err,results) => {if(err) return res.status(500).json({erro
 })}
 
 
-const show = (req,res) => {}
+const show = (req,res) => {
+
+
+    const movieid = parseInt(req.params.id)
+
+
+    const sql = `SELECT *
+    FROM imdboolean.movies
+    WHERE ID = ?`
+
+
+connection.query(sql,[movieid],(err,results) =>{
+    if (err) return res.status(500).json({message :`query request failed`})
+
+        if (!results.length) return  res.status(404).json({message : `cannot find a movie with id${movieid}`})
+           
+            const searchedMovie = results[0]
+            res.json(searchedMovie)
+})
+
+}
 
 
 const store = (req,res) => {}
