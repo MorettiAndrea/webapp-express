@@ -3,10 +3,10 @@ const mySql = require("sql2")
 
 
 const connection = mySql.createConnection({
-    host: "localhost",
-    user:"root",
+    host: process.env.MY_HOST,
+    user:process.env.MY_USERNAME,
     password:process.env.MY_PASSWORD,
-    port:3306,
+    port:process.env.MY_PORT,
 })
 
 connection.connect((err)=> {if (err) throw err})
