@@ -13,10 +13,12 @@ const {internalServerError,notFoundHandler}= require("./errorHandlers/internalSe
 
 
 // express middlewares
+
 app.use(express.json())
 app.use(express.static("public"))
 
 // errors middlewares
+
 app.use(internalServerError);
 app.use(notFoundHandler);
 
