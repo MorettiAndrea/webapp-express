@@ -5,7 +5,7 @@ const router = (express.Router)
 
 // import controller
 
-const movieRoutercontrollers = require("../controllers/MovieRouterControllers")
+const movieRoutercontrollers = require("../controllers/MoviesRouterControllers")
 
 // index
 
@@ -30,3 +30,5 @@ router.patch("/:id",movieRoutercontrollers.modify)
 // destroy
 
 router.delete("/:id",movieRoutercontrollers.destroy)
+
+module.exports = router

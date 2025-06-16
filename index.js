@@ -8,14 +8,15 @@ const localhost = `http://localhost:${port}`
 
 
 // imports
-const {internalServerError,notFoundHandler}= require("./errorHandlers/internalServerError")
-
+const router = require("./routers/moviesRouter")
+const {internalServerError,notFoundHandler}= require("./errorHandlers/errorHandlers")
 
 
 // express middlewares
 
 app.use(express.json())
 app.use(express.static("public"))
+app.use("/movies", router)
 
 // errors middlewares
 
