@@ -1,6 +1,18 @@
-const connection = require("../data/db")
+// setup
 
-const index = (req,res) => {}
+const connection = require("../data/db")
+const { response } = require("express");
+
+const index = (req,res) => {const sql = `SELECT *
+FROM imdboolean.movies`
+
+connection.query(sql,(err,results) => {if(err) return res.status(500).json({error:"query request failed"})
+
+    res.json({data:results,
+        status: 200,
+    })
+
+})}
 
 
 const show = (req,res) => {}

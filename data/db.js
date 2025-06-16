@@ -1,4 +1,4 @@
-const mySql = require("sql2")
+const mySql = require("mysql2")
 
 
 
