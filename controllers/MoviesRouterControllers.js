@@ -2,7 +2,8 @@
 
 const connection = require("../data/db")
 const { response } = require("express");
-
+const backEndport = 3000
+const backEndUrl = `http://localhost:${backEndport}`
 // richiesta tutti i film
 
 const index = (req,res) => {const sqlIndex = `SELECT *
@@ -14,7 +15,7 @@ const movieList = results.map((movie) => {
 
     const hasImage = { ...movie
     };
-    hasImage.image = movie.image ? `http://localhost:3000/public/imgs/${movie.image}` :"img not aviable";
+    hasImage.image = movie.image ? `${backEndUrl}/public/imgs/${movie.image}` :"img not aviable";
 
     return hasImage;
   })

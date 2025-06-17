@@ -3,10 +3,11 @@
 require("dotenv").config()
 const express = require("express")
 const app = express()
-const port = 3000
-const localhost = `http://localhost:${port}`
+const backEndport = 3000
+const backEndUrl = `http://localhost:${backEndport}`
 const cors = require("cors")
-const corsConfig ={origin: "http://localhost:5173"}
+const frontEndPort = 5173
+const corsConfig ={origin: `http://localhost:${frontEndPort}`}
 
 
 // imports
@@ -27,6 +28,6 @@ app.use(internalServerError);
 app.use(notFoundHandler);
 
 // port check
-
-app.listen(port,() =>{console.log( `il server sta ascoltando su ${localhost}`);
+backEndport
+app.listen(backEndport,() =>{console.log( `il server sta ascoltando su ${backEndUrl}`);
 })
