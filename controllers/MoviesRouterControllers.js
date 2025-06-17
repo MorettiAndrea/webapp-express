@@ -5,14 +5,23 @@ const { response } = require("express");
 
 // richiesta tutti i film
 
-const index = (req,res) => {const sql = `SELECT *
+const index = (req,res) => {const sqlIndex = `SELECT *
 FROM imdboolean.movies`
 
-connection.query(sql,(err,results) => {if(err) return res.status(500).json({error:"query request failed"})
+connection.query(sqlIndex,(err,results) => {if(err) return res.status(500).json({error:"query request failed"})
 
-    res.json({data:results,
-        status: 200,
-    })
+const movieList = results.map((movie) => {
+
+    const hasImage = { ...movie
+    };
+    hasImage.image = movie.image ? `http://localhost:3000/public/imgs/${movie.image}` :"img not aviable";
+
+    return hasImage;
+  })
+    res.json({
+  data:movieList ,
+  status: 200,
+});
 
 })}
 
@@ -20,21 +29,30 @@ connection.query(sql,(err,results) => {if(err) return res.status(500).json({erro
 const show = (req,res) => {
 
 
-    const movieid = parseInt(req.params.id)
+    const movieId = parseInt(req.params.id)
 
 
-    const sql = `SELECT *
+    const sqlShow = `SELECT *
     FROM imdboolean.movies
     WHERE ID = ?`
 
 
-connection.query(sql,[movieid],(err,results) =>{
+connection.query(sqlShow,[movieId],(err,results) =>{
     if (err) return res.status(500).json({message :`query request failed`})
 
-        if (!results.length) return  res.status(404).json({message : `cannot find a movie with id${movieid}`})
+        if (!results.length) return  res.status(404).json({message : `cannot find a movie with id ${movieId}`})
            
-            const searchedMovie = results[0]
-            res.json(searchedMovie)
+
+            const movieList = results.map((movie) => {
+
+    const hasImage = { ...movie
+    };
+    hasImage.image = movie.image ? `http://localhost:3000/public/imgs/${movie.image}` :"img not aviable";
+
+    return hasImage;
+  })       
+  
+   res.json(movieList[0])
 })
 
 }
@@ -49,7 +67,24 @@ const update = (req,res) => {}
 const modify = (req,res) => {}
 
 
-const destroy = (req,res) => {}
+const destroy = (req,res) => { 
+    
+    const movieId = parseInt(req.params.id)
+
+
+    const sqlDestroy = `DELETE
+    FROM imdboolean.movies
+    WHERE id = ?`;  
+    
+    connection.query(sqlDestroy,[movieId],(err,results) =>{
+
+    if (err) return res.status(500).json({message :`query request failed`})
+
+        if (!results.length) return  res.status(404).json({message : `cannot find a movie with id ${movieId}`})
+           
+         
+            res.status(204).json({message:`movie with id${movie} has been deleted`})
+})}
 
 
 module.exports = {index, show, store, update, modify, destroy}
