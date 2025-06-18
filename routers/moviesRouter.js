@@ -1,34 +1,34 @@
 // router setup
 
 const express= require("express")
-const router = (express.Router())
+const movieRouter = (express.Router())
 
 // import controller
 
-const movieRoutercontrollers = require("../controllers/MoviesRouterControllers")
+const movieRoutercontrollers = require("../controllers/moviesRouterControllers")
 
 // index
 
-router.get("/" , movieRoutercontrollers.index)
+movieRouter.get("/" , movieRoutercontrollers.index)
 
 // show
 
-router.get("/:id",movieRoutercontrollers.show)
+movieRouter.get("/:id",movieRoutercontrollers.show)
 
 // store
 
-router.post("/" , movieRoutercontrollers.store)
+movieRouter.post("/" , movieRoutercontrollers.store)
 
 // update
 
-router.put("/:id",movieRoutercontrollers.update)
+movieRouter.put("/:id",movieRoutercontrollers.update)
 
 // modify
 
-router.patch("/:id",movieRoutercontrollers.modify)
+movieRouter.patch("/:id",movieRoutercontrollers.modify)
 
 // destroy
 
-router.delete("/:id",movieRoutercontrollers.destroy)
+movieRouter.delete("/:id",movieRoutercontrollers.destroy)
 
-module.exports = router
+module.exports = movieRouter

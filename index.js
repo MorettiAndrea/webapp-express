@@ -11,16 +11,18 @@ const corsConfig ={origin: `http://localhost:${frontEndPort}`}
 
 
 // imports
-const router = require("./routers/moviesRouter")
+
+const movieRouter = require("./routers/moviesRouter")
+const reviewsRouter = require("./routers/rewievsRouter")
 const {internalServerError,notFoundHandler}= require("./errorHandlers/errorHandlers")
 
 
 // express middlewares
-
 app.use(cors(corsConfig))
 app.use(express.json())
 app.use(express.static("public"))
-app.use("/movies", router)
+app.use("/movies", movieRouter)
+app.use("/rewievs", reviewsRouter)
 
 // errors middlewares
 
@@ -28,6 +30,7 @@ app.use(internalServerError);
 app.use(notFoundHandler);
 
 // port check
+
 backEndport
 app.listen(backEndport,() =>{console.log( `il server sta ascoltando su ${backEndUrl}`);
 })
