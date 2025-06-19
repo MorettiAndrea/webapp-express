@@ -13,7 +13,6 @@ const corsConfig ={origin: `http://localhost:${frontEndPort}`}
 // imports
 
 const movieRouter = require("./routers/moviesRouter")
-const reviewsRouter = require("./routers/rewievsRouter")
 const {internalServerError,notFoundHandler}= require("./errorHandlers/errorHandlers")
 
 
@@ -22,7 +21,7 @@ app.use(cors(corsConfig))
 app.use(express.json())
 app.use(express.static("public"))
 app.use("/movies", movieRouter)
-app.use("/rewievs", reviewsRouter)
+
 
 // errors middlewares
 

@@ -16,7 +16,7 @@ const movieList = results.map((movie) => {
 
     const hasImage = { ...movie
     };
-    hasImage.image = movie.image ? `${backEndUrl}/imgs/${movie.image}` :"img not aviable";
+    hasImage.image = movie.image ? `${backEndUrl}/imgs/${movie.image}` :"image not aviable";
 
     return hasImage;
   })
@@ -28,36 +28,41 @@ const movieList = results.map((movie) => {
 })}
 
 
-const show = (req,res) => {
+const show = (req, res) => {
+    const movieId = parseInt(req.params.id);
 
+    const sqlMovie = `SELECT *
+                      FROM imdboolean.movies
+                      WHERE ID = ?`;
 
-    const movieId = parseInt(req.params.id)
+    connection.query(sqlMovie, [movieId], (err, movieResults) => {
+        if (err) {
+            return res.status(500).json({ message: `Errore nella richiesta del film.` });
+        }
 
+        if (!movieResults.length) {
+            return res.status(404).json({ message: `Impossibile trovare un film con ID ${movieId}.` });
+        }
 
-    const sqlShow = `SELECT *
-    FROM imdboolean.movies
-    WHERE ID = ?`
+        let movie = movieResults[0];
 
+        movie.image = movie.image ? `${backEndUrl}/imgs/${movie.image}` : "immagine non disponibile";
 
-connection.query(sqlShow,[movieId],(err,results) =>{
-    if (err) return res.status(500).json({message :`query request failed`})
+        const sqlReviews = `SELECT *
+                            FROM imdboolean.rewievs
+                            WHERE movie_id = ?`;
 
-        if (!results.length) return  res.status(404).json({message : `cannot find a movie with id ${movieId}`})
-           
+        connection.query(sqlReviews, [movieId], (err, reviewResults) => {
+            if (err) {
+                return res.status(500).json({ message: `Errore nella richiesta delle recensioni per il film ${movieId}.` });
+            }
 
-            const movieList = results.map((movie) => {
+            movie.reviews = reviewResults;
 
-    const hasImage = { ...movie
-    };
-    hasImage.image = movie.image ? `${backEndUrl}/imgs/${movie.image}` :"img not aviable";
-
-    return hasImage;
-  })       
-  
-   res.json(movieList[0])
-})
-
-}
+            return res.json(movie);
+        });
+    });
+};
 
 
 const store = (req,res) => {}
