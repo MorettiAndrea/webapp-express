@@ -35,21 +35,21 @@ const show = (req, res) => {
                       FROM imdboolean.movies
                       WHERE ID = ?`;
 
-    connection.query(sqlMovie, [movieId], (err, movieResults) => {
+    connection.query(sqlMovie, [movieId], (err, searchedMovie) => {
         if (err) {
             return res.status(500).json({ message: `Errore nella richiesta del film.` });
         }
 
-        if (!movieResults.length) {
+        if (!searchedMovie.length) {
             return res.status(404).json({ message: `Impossibile trovare un film con ID ${movieId}.` });
         }
 
-        let movie = movieResults[0];
+        let movie = searchedMovie[0];
 
         movie.image = movie.image ? `${backEndUrl}/imgs/${movie.image}` : "immagine non disponibile";
 
         const sqlReviews = `SELECT *
-                            FROM imdboolean.rewievs
+                            FROM imdboolean.reviews
                             WHERE movie_id = ?`;
 
         connection.query(sqlReviews, [movieId], (err, reviewResults) => {
@@ -65,7 +65,46 @@ const show = (req, res) => {
 };
 
 
-const store = (req,res) => {}
+const store = (req,res) => {
+    
+    const newReviewId= parseInt(req.params.id)
+
+
+    const{name,vote,text} = req.body
+
+
+    let errors=[]
+
+    if(!vote ||  vote<1 ||vote>5) 
+    {errors.push({message:"Vote must be a number between 1 and 5"})}
+
+   if (!name) {
+    errors.push({ message: "Please insert a name" });
+  }
+
+  if (!text || text.length < 10) {
+    errors.push({
+      message: "Your review is too short (at least 10 characters required)",
+    });
+  }
+
+  if (errors.length > 0) {
+    return res.status(402).json({ errors });
+
+  }
+
+   const query =
+    `INSERT INTO imdboolean.reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?)`;
+
+    connection.query(query, [newReviewId ,name, vote, text], (err, results) => {
+    if (err) return res.status(500).json({ message: "Query failed", err });
+
+    res.status(201).json({ message: "review added successfully" });
+
+    console.log(results);
+  });
+
+}
 
 
 const update = (req,res) => {}

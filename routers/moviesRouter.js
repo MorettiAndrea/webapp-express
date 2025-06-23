@@ -17,7 +17,7 @@ movieRouter.get("/:id",movieRoutercontrollers.show)
 
 // store
 
-movieRouter.post("/" , movieRoutercontrollers.store)
+movieRouter.post("/:id/reviews" , movieRoutercontrollers.store)
 
 // update
 
