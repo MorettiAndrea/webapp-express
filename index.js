@@ -30,6 +30,5 @@ app.use(notFoundHandler);
 
 // port check
 
-backEndport
 app.listen(backEndport,() =>{console.log( `il server sta ascoltando su ${backEndUrl}`);
 })
